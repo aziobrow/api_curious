@@ -1,0 +1,4 @@
+<%= image_tag(@user.image_url, size: "100", alt: @user.username, class: "profile-pic") %>
+Stars <%= @user.starred_repos.count %>
+Followers <%= @user.followers.count %>
+Following <%= @user.following.count %>
