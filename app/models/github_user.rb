@@ -7,7 +7,7 @@ class GithubUser
     @starred_repos       = get_attribute("starred")
     @followers      = get_attribute("followers")
     @following   = get_attribute("following")
-    @organizations  = get_attribute("organizations")
+    @organizations  = get_attribute("orgs")
     @repos  = get_attribute("repos")
   end
 

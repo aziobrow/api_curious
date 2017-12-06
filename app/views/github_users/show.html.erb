@@ -2,3 +2,11 @@
 Stars <%= @user.starred_repos.count %>
 Followers <%= @user.followers.count %>
 Following <%= @user.following.count %>
+<% if !@user.organizations.empty? %>
+  Organizations <% @user.organizations.each do |organization| %>
+    <%= organization[:name] %>
+  <% end %>
+<% end %>
+Repositories  <% @user.repos.each do |repo| %>
+  <%= repo[:name] %>
+<% end %>
