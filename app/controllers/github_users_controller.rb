@@ -7,7 +7,6 @@ class GithubUsersController < ApplicationController
     response = @conn.get("/users/#{current_user.username}")
 
     attributes = JSON.parse(response.body, symbolize_names: true)
-    require "pry"; binding.pry
     @user = GithubUser.new(attributes)
   end
 end
