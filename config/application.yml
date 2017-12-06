@@ -1,0 +1,4 @@
+GITHUB_KEY: 7d3b4cc18a78bf54de27
+GITHUB_SECRET:  458416446f84d61d40b6f6d1f110d2eea5b2e195
+
+MOCK_TOKEN: User.first.oauth_token
