@@ -1,12 +1,9 @@
 class GithubUsersController < ApplicationController
   def show
-    @conn = Faraday.new(url: "https://api.github.com") do |faraday|
-      faraday.headers["X-API-KEY"] = current_user.oauth_token
-      faraday.adapter Faraday.default_adapter
-    end
-    response = @conn.get("/users/#{current_user.username}")
+    @github_user = GithubUser.new(current_user)
+  end
 
-    attributes = JSON.parse(response.body, symbolize_names: true)
-    @user = GithubUser.new(attributes)
+  def orgs
+    @orgs = GithubUser.new(current_user).organizations
   end
 end

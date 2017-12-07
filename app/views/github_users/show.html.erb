@@ -1,12 +1,15 @@
-<%= image_tag(@user.image_url, size: "100", alt: @user.username, class: "profile-pic") %>
-Stars <%= @user.starred_repos.count %>
-Followers <%= @user.followers.count %>
-Following <%= @user.following.count %>
-<% if !@user.organizations.empty? %>
-  Organizations <% @user.organizations.each do |organization| %>
-    <%= organization[:name] %>
+<%= image_tag(@github_user.image_url, size: "100", class: "profile-pic") %>
+Stars <%= @github_user.starred_repos.count %>
+Followers <%= @github_user.followers.count %>
+Following <%= @github_user.following.count %>
+<% if !@github_user.organizations.empty? %>
+  Organizations <% @github_user.organizations.each do |organization| %>
+    <%= organization.login %>
   <% end %>
 <% end %>
-Repositories  <% @user.repos.each do |repo| %>
-  <%= repo[:name] %>
+<% if !@github_user.repos.empty? %>
+  Repositories  <% @github_user.repos.each do |repo| %>
+    <%= repo.name %>
+  <% end %>
 <% end %>
+<%= link_to "Organizations", organizations_path %>

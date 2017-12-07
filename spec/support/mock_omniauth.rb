@@ -13,6 +13,6 @@ def stub_omniauth
         "image"=>"https://avatars2.githubusercontent.com/u/25802671?v=4",
         "urls"=>{"GitHub"=>"https://github.com/aziobrow", "Blog"=>""},
       },
-    "credentials"=>{"token"=>"MOCK_TOKEN", "expires"=>false}
+    "credentials"=>{"token"=> "1234", "expires"=>false}
     })
 end
