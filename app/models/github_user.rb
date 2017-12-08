@@ -9,10 +9,9 @@ class GithubUser
   end
 
   def repos
-    repos = github.get_repos_info.map do |raw_repos_info|
+    github.get_repos_info.map do |raw_repos_info|
       Repository.new(raw_repos_info)
     end
-    repos
   end
 
   def starred_repos
@@ -22,14 +21,16 @@ class GithubUser
   end
 
   def followers
-      github.get_followers_info.map do |raw_follower_info|
-      GithubUser.new(raw_follower_info)
+    github.get_followers_info.map do |raw_follower_info|
+      user = User.create(provider: 'github', user_id: raw_follower_info[:id], username: raw_follower_info[:login])
+      GithubUser.new(user)
     end
   end
 
   def following
     github.get_following_info.map do |raw_following_info|
-      GithubUser.new(raw_following_info)
+      user = User.create(provider: 'github', user_id: raw_following_info[:id], username: raw_following_info[:login])
+      GithubUser.new(user)
     end
   end
 
@@ -43,11 +44,24 @@ class GithubUser
     repos.find_all {|repo| (Date.today - 1.month).to_s < repo.updated_at}
   end
 
-  def recent_commits
-    commits = recent_repos.each do |repo|
-      github.get_recent_commits_per_branch_info(repo.name)
+  def all_commits_from_recent_repos
+    commits = []
+    recent_repos.each do |repo|
+      commits << create_commits_per_repo(repo.name)
     end
-    require "pry"; binding.pry
+    commits.flatten.compact
+  end
+
+  def create_commits_per_repo(repo_name)
+    github.get_commit_info_per_repo_info(repo_name).map do |commit_info|
+      if commit_info.class == Hash
+        Commit.new(commit_info)
+      end
+    end
+  end
+
+  def recent_commits
+    all_commits_from_recent_repos.find_all {|commit| (Date.today - 1.month).to_s < commit.date }
   end
 
 private
