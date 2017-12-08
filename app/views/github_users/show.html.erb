@@ -12,4 +12,4 @@ Following <%= @github_user.following.count %>
     <%= repo.name %>
   <% end %>
 <% end %>
-<%= link_to "Organizations", organizations_path %>
+Contribution Activity Created <%= @github_user.recent_commits.count %> in <%= @github_user.recent_repos.count %>

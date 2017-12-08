@@ -34,6 +34,24 @@ attr_reader :conn
     get_json("/user/orgs")
   end
 
+  def get_commit_shas_per_repo_branch_info(repo_name)
+    response = get_json("/repos/#{@user.username}/#{repo_name}/branches")
+    response.map {|branch| branch[:commit][:sha]}
+  end
+
+  def get_commits_per_branch_info(repo_name)
+    all_commit_info = get_commit_shas_per_repo_branch_info.each do |sha|
+      get_json("/repos/#{@user.username}/#{repo_name}/commits/#{sha}")
+    end
+    all_commit_info.each do |commit_info|
+      Commit.new(commit_info)
+    end
+  end
+
+  def get_recent_commits_per_branch_info(repo_name)
+    get_commits_per_branch_info.find_all {|commit| (Date.today - 1.month).to_s < commit.date }
+  end
+
 private
   def get_json(url)
     response = conn.get(url)

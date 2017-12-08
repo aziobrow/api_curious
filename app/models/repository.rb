@@ -1,6 +1,7 @@
 class Repository
 
-  attr_reader :name, :full_name
+  attr_reader :name, :updated_at
+
   def initialize(raw_repo_info)
     @name = raw_repo_info[:name]
     @full_name = raw_repo_info[:full_name]

@@ -9,9 +9,10 @@ class GithubUser
   end
 
   def repos
-    github.get_repos_info.map do |raw_repos_info|
+    repos = github.get_repos_info.map do |raw_repos_info|
       Repository.new(raw_repos_info)
     end
+    repos
   end
 
   def starred_repos
@@ -38,16 +39,22 @@ class GithubUser
     end
   end
 
+  def recent_repos
+    repos.find_all {|repo| (Date.today - 1.month).to_s < repo.updated_at}
+  end
+
+  def recent_commits
+    commits = recent_repos.each do |repo|
+      github.get_recent_commits_per_branch_info(repo.name)
+    end
+    require "pry"; binding.pry
+  end
+
 private
   attr_reader :user
 
   def github
     @github ||= GithubService.new(user)
   end
-
-  # def image_url
-  #   @raw_profile_data ||= GithubService.new(user).get_profile_info
-  # end
-
 
 end
